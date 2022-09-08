@@ -6,10 +6,11 @@
 </head>
 <body>
     <form method="post">
-        <h1>Authors</h1>
-        <input name="create" type="submit" value="create new author"><br>
-        <input name="edit" type="submit" value="edit author"><br>
-        <input name="remove" type="submit" value="remove author"><br>
+        <h1>Авторы</h1>
+        <input name="create" type="submit" value="Создать нового автора"><br>
+        <input name="edit" type="submit" value="Посмотреть и изменить выбранного автора"><br>
+        <input name="remove" type="submit" value="Удалить выбранного автора"><br>
+        <input name="back" type="submit" value="Вернуться"><br>
         <select  size="{{ authors|length }}" name="author">
         {% for author in authors %}
             <option value ={{ author.id }}>{{ loop.index }}) {{ author.name }}</option>

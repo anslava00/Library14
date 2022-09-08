@@ -16,18 +16,27 @@ class AuthorController extends AbstractController
     public function show(Request $request): Response
     {
         if ($request->isMethod('POST')) {
+            if (isset($_POST['back']))
+                return $this->redirect('/main_page');
             if (isset($_POST['create']))
                 return $this->redirect('/author/create');
-            if (isset($_POST['edit'])){
-                $choose = $request->request->all()['author'];
-                return $this->redirect('/author/show/profile/'.(int)$choose);
-            }
-            if (isset($_POST['remove'])){
-                $idAuthor = $request->request->all()['author'];
-                $authors = $this->getDoctrine()->getRepository(Author::class)->find($idAuthor);
-                $doct = $this->getDoctrine()->getManager();
-                $doct->remove($authors);
-                $doct->flush();
+
+            $date = $request->request->all();
+            if (isset($date['author'])) {
+
+                if (isset($_POST['edit'])) {
+                    $id = $date['author'];
+                    return $this->redirect('/author/show/profile/' . (int)$id);
+                }
+                if (isset($_POST['remove'])) {
+                    $authors = $this->getDoctrine()->getRepository(Author::class)->find($date['author']);
+                    if (isset($authors)){
+                        $doct = $this->getDoctrine()->getManager();
+                        $doct->remove($authors);
+                        $doct->flush();
+                    }
+
+                }
             }
         }
 
@@ -62,11 +71,15 @@ class AuthorController extends AbstractController
     {
         if ($request->isMethod('POST'))
         {
-            $date = $request->request->all();
-            $author = new Author();
-            $this->save($date, $author);
+            if (isset($_POST['create'])){
+                $date = $request->request->all();
+                $author = new Author();
+                $this->save($date, $author);
 
-            return $this->redirect('/author/show');
+                return $this->redirect('/author/show');
+            }
+            if (isset($_POST['back']))
+                return $this->redirect('/author/show');
         }
         return $this->render('author/create.html.twig');
     }
