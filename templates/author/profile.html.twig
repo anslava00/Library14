@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Author</title>
+</head>
+<body>
+<form method="post">
+    <h1>Authors</h1>
+    <label>name</label>
+    <input name="name" type="text" value={{ author.name }}><br>
+    <label>date of birthday</label>
+    <input name="date" type="date" value={{ author.dateOfBirth|date("Y-m-d") }}><br>
+    <label>phone</label>
+    <input name="phone" type="text" value={{ author.phone }}><br>
+    <label>email</label>
+    <input name="email" type="text" value={{ author.email }}><br>
+
+    <input name="back" type="submit" value="return back"><br>
+    <input name="edit" type="submit" value="edit"><br>
+</form>
+</body>
+</html>

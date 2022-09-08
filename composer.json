@@ -64,6 +64,7 @@
     },
     "require-dev": {
         "symfony/maker-bundle": "^1.35",
-        "symfony/web-server-bundle": "4.4.*"
+        "symfony/web-server-bundle": "4.4.*",
+        "zenstruck/foundry": "^1.21"
     }
 }

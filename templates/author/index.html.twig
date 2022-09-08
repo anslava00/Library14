@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Author</title>
+</head>
+<body>
+    <form method="post">
+        <h1>Authors</h1>
+        <input name="create" type="submit" value="create new author"><br>
+        <input name="edit" type="submit" value="edit author"><br>
+        <input name="remove" type="submit" value="remove author"><br>
+        <select  size="{{ authors|length }}" name="author">
+        {% for author in authors %}
+            <option value ={{ author.id }}>{{ loop.index }}) {{ author.name }}</option>
+        {% endfor %}
+        </select>
+
+    </form>
+</body>
+</html>
