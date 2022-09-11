@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Create book</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" id="form">
+    <H1>Создание новой книги</H1><br>
+    Название <input type="text" name="title"><br>
+    Описание <textarea  name="description"></textarea><br>
+    Год публикации <input type="date" name="year"><br>
+    Обложка  <input type="file" name="image" onchange="onFileSelected(event)">
+        <img id="myimage" height="200"><br>
+    Авторы<br>
+
+    <select  size="{{ authors|length }}" id="authorList" onDblClick="chooseAuthor('authorList', 'authorChoose')">
+        {% for author in authors %}
+            <option value ={{ author.id }}> {{ author.name }}</option>
+        {% endfor %}
+    </select><br>
+    Выбранные авторы<br>
+    <select id="authorChoose" onDblClick="chooseAuthor('authorChoose', 'authorList')">
+    </select><br>
+
+    <input name="create" type="submit" value="Создать" onclick="createArray()">
+    <input name="back" type="submit" value="Вернуться">
+</form>
+
+<script>
+    function chooseAuthor (select, toSelect){
+        let element = document.getElementById(select);
+        let toElement = document.getElementById(toSelect);
+        let option = document.createElement('option');
+        option.text = element.options[element.selectedIndex].text;
+        option.value = element.value;
+        toElement.size = toElement.childElementCount + 1;
+        element.size = element.childElementCount - 1;
+        toElement.appendChild(option);
+        element.remove(element.selectedIndex);
+    }
+
+    function createArray(){
+        let parent = document.getElementById("form");
+        let toElement = document.getElementById("authorChoose");
+        let input = document.createElement("input");
+        input.type = 'text';
+        input.name = "countAuthor";
+        input.hidden = true;
+        input.value = toElement.childElementCount;
+        parent.appendChild(input);
+        for (let i = 0; i < toElement.childElementCount; i++){
+            let input = document.createElement("input");
+            toElement.selectedIndex = i;
+            input.type = 'text';
+            input.hidden = true;
+            input.name = "author"+i;
+            input.value = toElement.value;
+            parent.appendChild(input);
+        }
+    }
+
+    function onFileSelected(event) {
+        let selectedFile = event.target.files[0];
+        let reader = new FileReader();
+
+        let imgtag = document.getElementById("myimage");
+        imgtag.title = selectedFile.name;
+
+        reader.onload = function(event) {
+            imgtag.src = event.target.result;
+        };
+
+        reader.readAsDataURL(selectedFile);
+    }
+
+</script>
+</body>
+</html>

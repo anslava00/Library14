@@ -47,6 +47,24 @@ class AuthorRepository extends ServiceEntityRepository
         }
     }
 
+     /**
+      * @return Author[] Returns an array of Author objects
+      */
+    public function findAllExcept($authors)
+    {
+        $idAuthors = [];
+        foreach($authors as $author){
+            array_push($idAuthors, $author->getId());
+        }
+        return $this->createQueryBuilder('a')
+            ->where('a.id NOT IN (:idAuthors)')
+            ->setParameter('idAuthors', $idAuthors)
+            ->getQuery()
+            ->getResult()
+        ;
+    }
+
+
     // /**
     //  * @return Author[] Returns an array of Author objects
     //  */

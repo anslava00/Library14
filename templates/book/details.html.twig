@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+</head>
+<body>
+<form method="post" enctype="multipart/form-data" id="form">
+    <h1>Книга</h1>
+    <label>Название</label>
+    <input name="title" type="text" value={{ book.title }}><br>
+    <label>Описание</label>
+    <textarea name="description">{{ book.description }}</textarea><br>
+    <label>Дата выпуска</label>
+    <input name="year" type="date" value={{ book.year|date("Y-m-d")  }}><br>
+    <label>Обложка</label><br>
+    <img  src="{{ asset('/image/' ~ book.image)}}" width="200" id="myimage"><br>
+    Изменить обложку<br>
+    <input type="file" name="image" onchange="onFileSelected(event)"><br><br>
+
+    Выбранные авторы<br>
+    <select  size="{{ chooseAuthors|length }}" id="authorChoose" onDblClick="chooseAuthor('authorChoose', 'authorList')">
+        {% for author in chooseAuthors %}
+            <option value ={{ author.id }}> {{ author.name }}</option>
+        {% endfor %}
+    </select><br>
+    Авторы<br>
+    <select size="{{ authors|length }}" id="authorList" onDblClick="chooseAuthor('authorList', 'authorChoose')">
+        {% for author in authors %}
+            <option value ={{ author.id }}> {{ author.name }}</option>
+        {% endfor %}
+    </select><br>
+
+    <input name="edit" type="submit" value="Изменить" onclick="createArray()"><br>
+    <input name="back" type="submit" value="Вернуться"><br>
+</form>
+<script>
+    function chooseAuthor (select, toSelect){
+        let element = document.getElementById(select);
+        let toElement = document.getElementById(toSelect);
+        let option = document.createElement('option');
+        option.text = element.options[element.selectedIndex].text;
+        option.value = element.value;
+        toElement.size = toElement.childElementCount + 1;
+        element.size = element.childElementCount - 1;
+        toElement.appendChild(option);
+        element.remove(element.selectedIndex);
+    }
+
+    function createArray(){
+        let parent = document.getElementById("form");
+        let toElement = document.getElementById("authorChoose");
+        let input = document.createElement("input");
+        input.type = 'text';
+        input.name = "countAuthor";
+        input.hidden = true;
+        input.value = toElement.childElementCount;
+        parent.appendChild(input);
+        for (let i = 0; i < toElement.childElementCount; i++){
+            let input = document.createElement("input");
+            toElement.selectedIndex = i;
+            input.type = 'text';
+            input.hidden = true;
+            input.name = "author"+i;
+            input.value = toElement.value;
+            parent.appendChild(input);
+        }
+    }
+
+    function onFileSelected(event) {
+        let selectedFile = event.target.files[0];
+        let reader = new FileReader();
+
+        let imgtag = document.getElementById("myimage");
+        imgtag.title = selectedFile.name;
+
+        reader.onload = function(event) {
+            imgtag.src = event.target.result;
+        };
+
+        reader.readAsDataURL(selectedFile);
+    }
+</script>
+</body>
+</html>

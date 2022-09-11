@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Book</title>
+</head>
+<body>
+<form method="post">
+    <h1>Книги</h1>
+    <input name="create" type="submit" value="Создать новую книгу"><br>
+    <input name="edit" type="submit" value="Посмотреть и изменить выбранную книгу"><br>
+    <input name="remove" type="submit" value="Удалить выбранную книгу"><br>
+    <input name="back" type="submit" value="Вернуться"><br>
+    <select  size="{{ books|length }}" name="book">
+        {% for book in books %}
+            <option value ={{ book.id }}>{{ loop.index }}) {{ book.title }}</option>
+        {% endfor %}
+    </select>
+
+</form>
+</body>
+</html>
