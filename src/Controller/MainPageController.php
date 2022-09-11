@@ -11,18 +11,20 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainPageController extends AbstractController
 {
     /**
-     * @Route("/main_page", name="app_main_page")
+     * @Route("/main_page", name="mainpage")
      */
     public function index(Request $request): Response
     {
         if ($request->isMethod('POST'))
         {
             if (isset($_POST['Author']))
-                return $this->redirect('/author/show');
+                return $this->redirectToRoute('author_show');
             if (isset($_POST['Factory']))
-                return $this->redirect('/factory');
+                return $this->redirectToRoute('factory_show');
+            if (isset($_POST['Book']))
+                return $this->redirectToRoute('book_show');
         }
 
-        return $this->render('main_page/index.html.twig');
+        return $this->render('main_page/show.html.twig');
     }
 }
