@@ -15,6 +15,9 @@
     <input name="phone" type="text" value={{ author.phone }}><br>
     <label>Почта</label>
     <input name="email" type="text" value={{ author.email }}><br>
+    <label>Количество книг</label>
+    {{ author.countbook| default("0") }}<br>
+
 
     <input name="back" type="submit" value="Вернуться"><br>
     <input name="edit" type="submit" value="Изменить"><br>

@@ -31,6 +31,10 @@ class BookController extends AbstractController
                 if (isset($_POST['remove'])) {
                     $book = $this->getDoctrine()->getRepository(Book::class)->find($date['book']);
                     if (isset($book)){
+                        $authors = $book->getAuthors();
+                        foreach ($authors as $author) {
+                            $author->setCountBook(-1);
+                        }
                         $filesystem = new Filesystem();
                         $filesystem->remove('image/'.$book->getImage());
                         $doct = $this->getDoctrine()->getManager();
@@ -80,11 +84,13 @@ class BookController extends AbstractController
                     }
                     if (!$haveInArray){
                         $book->removeAuthor($author);
+                        $author->setCountBook(-1);
                     }
                 }
                 foreach(range(0, $date['countAuthor'] - 1) as $i) {
                     $author = $this->getDoctrine()->getRepository(Author::class)->find($date['author' . $i]);
                     $book->addAuthor($author);
+                    $author->setCountBook(1);
                 }
                 $this->save($date, $book, $originalNameFile);
             }
@@ -118,6 +124,7 @@ class BookController extends AbstractController
                 foreach(range(0, $date['countAuthor'] - 1) as $i) {
                     $author = $this->getDoctrine()->getRepository(Author::class)->find($date['author' . $i]);
                     $book->addAuthor($author);
+                    $author->setCountBook(1);
                 }
                 $this->save($date, $book, $originalNameFile);
             }
