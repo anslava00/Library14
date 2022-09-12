@@ -7,12 +7,13 @@
 <body>
 <form method="post" enctype="multipart/form-data" id="form">
     <h1>Книга</h1>
-    <label>Название</label>
-    <input name="title" type="text" value={{ book.title }}><br>
+    <p>Название <input name="title" type="text" value={{ book.title }}>
+    </p>
+
     <label>Описание</label>
     <textarea name="description">{{ book.description }}</textarea><br>
     <label>Дата выпуска</label>
-    <input name="year" type="date" value={{ book.year|date("Y-m-d")  }}><br>
+    <input name="year" type="date" value={{ book.year is empty ? "" : book.year|date("Y-m-d") }}><br>
     <label>Обложка</label><br>
     <img  src="{{ asset('/image/' ~ book.image)}}" width="200" id="myimage"><br>
     Изменить обложку<br>
@@ -31,7 +32,7 @@
         {% endfor %}
     </select><br>
 
-    <input name="edit" type="submit" value="Изменить" onclick="createArray()"><br>
+    <input name="edit" type="submit" value="Изменить" onclick="createArray('authorChoose')"><br>
     <input name="back" type="submit" value="Вернуться"><br>
 </form>
 </body>

@@ -22,14 +22,14 @@ class BookController extends AbstractController
                 return $this->redirectToRoute('mainpage');
             if (isset($_POST['create']))
                 return $this->redirectToRoute('book_create');
-            $date = $request->request->all();
-            if (isset($date['book'])) {
+            $data = $request->request->all();
+            if (isset($data['book'])) {
                 if (isset($_POST['edit'])) {
-                    $id = $date['book'];
+                    $id = $data['book'];
                     return $this->redirectToRoute('book_details' , ['id' => $id]);
                 }
                 if (isset($_POST['remove'])) {
-                    $book = $this->getDoctrine()->getRepository(Book::class)->find($date['book']);
+                    $book = $this->getDoctrine()->getRepository(Book::class)->find($data['book']);
                     if (isset($book)){
                         $authors = $book->getAuthors();
                         foreach ($authors as $author) {
@@ -72,12 +72,12 @@ class BookController extends AbstractController
                     $file->move($path, $originalNameFile);
                 }
 
-                $date = $request->request->all();
+                $data = $request->request->all();
                 $authors = $book->getAuthors();
                 foreach ($authors as $author){
                     $haveInArray = false;
-                    foreach(range(0, $date['countAuthor'] - 1) as $i) {
-                        if ($author->getId() == $date['author' . $i]){
+                    for ($i = 0; $i < $data['countAuthor']; $i++){
+                        if ($author->getId() == $data['author' . $i]){
                             $haveInArray = true;
                             break;
                         }
@@ -87,12 +87,12 @@ class BookController extends AbstractController
                         $author->setCountBook(-1);
                     }
                 }
-                foreach(range(0, $date['countAuthor'] - 1) as $i) {
-                    $author = $this->getDoctrine()->getRepository(Author::class)->find($date['author' . $i]);
+                for ($i = 0; $i < $data['countAuthor']; $i++){
+                    $author = $this->getDoctrine()->getRepository(Author::class)->find($data['author' . $i]);
                     $book->addAuthor($author);
                     $author->setCountBook(1);
                 }
-                $this->save($date, $book, $originalNameFile);
+                $this->save($data, $book, $originalNameFile);
             }
         }
         $authors = $this->getDoctrine()->getRepository(Author::class)->findAllExcept($book->getAuthors());
@@ -119,14 +119,14 @@ class BookController extends AbstractController
                     $file->move($path, $originalNameFile);
                 }
 
-                $date = $request->request->all();
                 $book = new Book();
-                foreach(range(0, $date['countAuthor'] - 1) as $i) {
-                    $author = $this->getDoctrine()->getRepository(Author::class)->find($date['author' . $i]);
+                $data = $request->request->all();
+                for ($i = 0; $i < $data['countAuthor']; $i++){
+                    $author = $this->getDoctrine()->getRepository(Author::class)->find($data['author' . $i]);
                     $book->addAuthor($author);
                     $author->setCountBook(1);
                 }
-                $this->save($date, $book, $originalNameFile);
+                $this->save($data, $book, $originalNameFile);
             }
             return $this->redirectToRoute('book_show');
         }
@@ -136,13 +136,13 @@ class BookController extends AbstractController
         ]);
     }
 
-    public function save($date, Book $book, $fileName): Book
+    public function save($data, Book $book, $fileName): Book
     {
-        $book->setTitle($date['title']);
-        $book->setDescription($date['description']);
-        if ($fileName != '')
-            $book->setImage($fileName);
-        $book->setYear(\DateTime::createFromFormat('Y-m-d', $date['year']));
+        $book->setTitle($data['title']);
+        $book->setDescription($data['description']);
+        $book->setImage($fileName);
+        if (!empty($data['year']))
+            $book->setYear(\DateTime::createFromFormat('Y-m-d', $data['year']));
         $doct = $this->getDoctrine()->getManager();
         $doct->persist($book);
         $doct->flush();

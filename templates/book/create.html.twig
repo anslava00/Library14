@@ -6,24 +6,29 @@
 </head>
 <body>
 <form method="post" enctype="multipart/form-data" id="form">
-    <H1>Создание новой книги</H1><br>
-    Название <input type="text" name="title"><br>
-    Описание <textarea  name="description"></textarea><br>
-    Год публикации <input type="date" name="year"><br>
-    Обложка  <input type="file" name="image" onchange="onFileSelected(event)">
-        <img id="myimage" height="200"><br>
-    Авторы<br>
+    <H1>Создание новой книги</H1>
+    <p>Название* <input type="text" name="title">
+    {{ error.name|default }}</p>
+
+    <p>Описание <textarea  name="description"></textarea></p>
+
+    <p>Год публикации <input type="date" name="year"></p>
+
+    <p>Обложка  <input type="file" name="image" onchange="onFileSelected(event)">
+        <img id="myimage" height="200"></p>
+    <p>Авторы<br>
 
     <select  size="{{ authors|length }}" id="authorList" onDblClick="chooseAuthor('authorList', 'authorChoose')">
         {% for author in authors %}
             <option value ={{ author.id }}> {{ author.name }}</option>
         {% endfor %}
-    </select><br>
-    Выбранные авторы<br>
-    <select id="authorChoose" onDblClick="chooseAuthor('authorChoose', 'authorList')">
-    </select><br>
+    </select></p>
 
-    <input name="create" type="submit" value="Создать" onclick="createArray()">
+    <p>Выбранные авторы<br>
+    <select id="authorChoose" onDblClick="chooseAuthor('authorChoose', 'authorList')">
+    </select></p>
+
+    <input name="create" type="submit" value="Создать" onclick="createArray('authorChoose')">
     <input name="back" type="submit" value="Вернуться">
 </form>
 

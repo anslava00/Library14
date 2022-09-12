@@ -50,9 +50,9 @@ class AuthorRepository extends ServiceEntityRepository
      /**
       * @return Author[] Returns an array of Author objects
       */
-    public function findAllExcept($authors)
+    public function findAllExcept($authors): array
     {
-        $idAuthors = [];
+        $idAuthors = [-1, ];
         foreach($authors as $author){
             $idAuthors[] = $author->getId();
         }

@@ -7,16 +7,19 @@
 <body>
     <form method="post">
         <h1>Авторы</h1>
-        <input name="create" type="submit" value="Создать нового автора"><br>
-        <input name="edit" type="submit" value="Посмотреть и изменить выбранного автора"><br>
-        <input name="remove" type="submit" value="Удалить выбранного автора"><br>
-        <input name="back" type="submit" value="Вернуться"><br>
-        <select  size="{{ authors|length }}" name="author">
+        <p><input name="create" type="submit" value="Создать нового автора"></p>
+
+        <p><input name="edit" type="submit" value="Посмотреть и изменить выбранного автора"></p>
+
+        <p><input name="remove" type="submit" value="Удалить выбранного автора"></p>
+
+        <p><input name="back" type="submit" value="Вернуться"></p>
+
+        <p><select  size="{{ authors|length }}" name="author">
         {% for author in authors %}
             <option value ={{ author.id }}>{{ loop.index }}) {{ author.name }}</option>
         {% endfor %}
-        </select>
-
+        </select></p>
     </form>
 </body>
 </html>

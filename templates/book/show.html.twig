@@ -7,16 +7,15 @@
 <body>
 <form method="post">
     <h1>Книги</h1>
-    <input name="create" type="submit" value="Создать новую книгу"><br>
-    <input name="edit" type="submit" value="Посмотреть и изменить выбранную книгу"><br>
-    <input name="remove" type="submit" value="Удалить выбранную книгу"><br>
-    <input name="back" type="submit" value="Вернуться"><br>
-    <select  size="{{ books|length }}" name="book">
+    <p><input name="create" type="submit" value="Создать новую книгу"></p>
+    <p><input name="edit" type="submit" value="Посмотреть и изменить выбранную книгу"></p>
+    <p><input name="remove" type="submit" value="Удалить выбранную книгу"></p>
+    <p><input name="back" type="submit" value="Вернуться"></p>
+    <p><select  size="{{ books|length }}" name="book">
         {% for book in books %}
             <option value ={{ book.id }}>{{ loop.index }}) {{ book.title }}</option>
         {% endfor %}
-    </select>
-
+    </select></p>
 </form>
 </body>
 </html>

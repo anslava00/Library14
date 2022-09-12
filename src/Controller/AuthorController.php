@@ -22,15 +22,15 @@ class AuthorController extends AbstractController
             if (isset($_POST['create']))
                 return $this->redirectToRoute('author_create');
 
-            $date = $request->request->all();
-            if (isset($date['author'])) {
+            $data = $request->request->all();
+            if (isset($data['author'])) {
 
                 if (isset($_POST['edit'])) {
-                    $id = $date['author'];
+                    $id = $data['author'];
                     return $this->redirectToRoute('author_profile' , ['id' => $id]);
                 }
                 if (isset($_POST['remove'])) {
-                    $authors = $this->getDoctrine()->getRepository(Author::class)->find($date['author']);
+                    $authors = $this->getDoctrine()->getRepository(Author::class)->find($data['author']);
                     if (isset($authors)){
                         $doct = $this->getDoctrine()->getManager();
                         $doct->remove($authors);
@@ -57,14 +57,14 @@ class AuthorController extends AbstractController
             if (isset($_POST['back']))
                 return $this->redirectToRoute('author_show');
             if (isset($_POST['edit'])){
-                $date = $request->request->all();
-                $error = $this->castomAuthorValidate($date, $id);
+                $data = $request->request->all();
+                $error = $this->castomAuthorValidate($data, $id);
                 if (count($error) > 0)
                     return $this->render('author/profile.html.twig', [
-                        'author' => $date,
+                        'author' => $data,
                         'error' => $error,
                     ]);
-                $author = $this->save($date, $author);
+                $author = $this->save($data, $author);
             }
         }
         return $this->render('author/profile.html.twig', [
@@ -79,43 +79,43 @@ class AuthorController extends AbstractController
         if ($request->isMethod('POST'))
         {
             if (isset($_POST['create'])){
-                $date = $request->request->all();
+                $data = $request->request->all();
                 $author = new Author();
-                $error = $this->castomAuthorValidate($date, $author->getId());
+                $error = $this->castomAuthorValidate($data, $author->getId());
                 if (count($error) > 0)
                     return $this->render('author/create.html.twig', [
-                        'author' => $date,
+                        'author' => $data,
                         'error' => $error,
                     ]);
-                $this->save($date, $author);
+                $this->save($data, $author);
             }
             return $this->redirectToRoute('author_show');
         }
         return $this->render('author/create.html.twig');
     }
 
-    public function castomAuthorValidate($date, $id)
+    public function castomAuthorValidate($data, $id)
     {
         $error = [];
-        if ($date['name'] === '')
+        if ($data['name'] === '')
             $error['name'] = 'Укажите ФИО';
-        if ($date['email'] === '')
+        if ($data['email'] === '')
             $error['email'] = 'Введите почту';
         else{
-            $author = $this->getDoctrine()->getRepository(Author::class)->findBy(['email' => $date['email']]);
+            $author = $this->getDoctrine()->getRepository(Author::class)->findBy(['email' => $data['email']]);
             if (count($author) && $author[0]->getId() != $id)
                 $error['email'] = 'Такая почта уже существует';
         }
         return $error;
     }
 
-    public function save($date, Author $author): Author
+    public function save($data, Author $author): Author
     {
-        $author->setName($date['name']);
-        if (!empty($date['dateOfBirth']))
-            $author->setDateOfBirth(\DateTime::createFromFormat('Y-m-d', $date['dateOfBirth']));
-        $author->setPhone($date['phone']);
-        $author->setEmail($date['email']);
+        $author->setName($data['name']);
+        if (!empty($data['dateOfBirth']))
+            $author->setDateOfBirth(\DateTime::createFromFormat('Y-m-d', $data['dateOfBirth']));
+        $author->setPhone($data['phone']);
+        $author->setEmail($data['email']);
 
         $doct = $this->getDoctrine()->getManager();
         $doct->persist($author);

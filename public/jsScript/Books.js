@@ -10,9 +10,9 @@ function chooseAuthor (select, toSelect){
     element.remove(element.selectedIndex);
 }
 
-function createArray(){
+function createArray(select){
     let parent = document.getElementById("form");
-    let toElement = document.getElementById("authorChoose");
+    let toElement = document.getElementById(select);
     let input = document.createElement("input");
     input.type = 'text';
     input.name = "countAuthor";
