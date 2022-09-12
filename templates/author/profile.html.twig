@@ -7,14 +7,17 @@
 <body>
 <form method="post">
     <h1>Автор</h1>
-    <label>ФИО</label>
-    <input name="name" type="text" value={{ author.name }}><br>
-    <label>Дата рождения</label>
-    <input name="date" type="date" value={{ author.dateOfBirth|date("Y-m-d") }}><br>
-    <label>Телефон</label>
-    <input name="phone" type="text" value={{ author.phone }}><br>
-    <label>Почта</label>
-    <input name="email" type="text" value={{ author.email }}><br>
+    <p>ФИО <input name="name" type="text" value={{ author.name }}>
+        {{ error.name|default }}</p>
+
+    <p>Дата рождения <input name="dateOfBirth" type="date" value={{ author.dateOfBirth is empty ? "" : author.dateOfBirth|date("Y-m-d") }}>
+        {{ error.date|default }}</p>
+
+    <p>Телефон <input name="phone"  type="tel" pattern="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$" value="{{ author.phone|default }}" placeholder="+7(999)-999-99-99">
+        {{ error.name|default }}</p>
+
+    <p>Почта <input name="email" type="text" value={{ author.email }}>
+        {{ error.email|default }}</p>
     <label>Количество книг</label>
     {{ author.countbook| default("0") }}<br>
 

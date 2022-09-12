@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Author;
+use mysql_xdevapi\Collection;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -57,6 +58,12 @@ class AuthorController extends AbstractController
                 return $this->redirectToRoute('author_show');
             if (isset($_POST['edit'])){
                 $date = $request->request->all();
+                $error = $this->castomAuthorValidate($date, $id);
+                if (count($error) > 0)
+                    return $this->render('author/profile.html.twig', [
+                        'author' => $date,
+                        'error' => $error,
+                    ]);
                 $author = $this->save($date, $author);
             }
         }
@@ -74,6 +81,12 @@ class AuthorController extends AbstractController
             if (isset($_POST['create'])){
                 $date = $request->request->all();
                 $author = new Author();
+                $error = $this->castomAuthorValidate($date, $author->getId());
+                if (count($error) > 0)
+                    return $this->render('author/create.html.twig', [
+                        'author' => $date,
+                        'error' => $error,
+                    ]);
                 $this->save($date, $author);
             }
             return $this->redirectToRoute('author_show');
@@ -81,10 +94,26 @@ class AuthorController extends AbstractController
         return $this->render('author/create.html.twig');
     }
 
+    public function castomAuthorValidate($date, $id)
+    {
+        $error = [];
+        if ($date['name'] === '')
+            $error['name'] = 'Укажите ФИО';
+        if ($date['email'] === '')
+            $error['email'] = 'Введите почту';
+        else{
+            $author = $this->getDoctrine()->getRepository(Author::class)->findBy(['email' => $date['email']]);
+            if (count($author) && $author[0]->getId() != $id)
+                $error['email'] = 'Такая почта уже существует';
+        }
+        return $error;
+    }
+
     public function save($date, Author $author): Author
     {
         $author->setName($date['name']);
-        $author->setDateOfBirth(\DateTime::createFromFormat('Y-m-d', $date['date']));
+        if (!empty($date['dateOfBirth']))
+            $author->setDateOfBirth(\DateTime::createFromFormat('Y-m-d', $date['dateOfBirth']));
         $author->setPhone($date['phone']);
         $author->setEmail($date['email']);
 

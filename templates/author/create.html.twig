@@ -6,11 +6,18 @@
 </head>
 <body>
 <form method="post" >
-    <H1>Создание ногово автора</H1><br>
-    ФИО <input type="text" name="name"><br>
-    Дата рождения <input type="date" name="date"><br>
-    Телефон <input type="tel" name="phone"><br>
-    Электронная почта <input type="email" name="email"><br>
+    <H1>Создание ногово автора</H1>
+    <p>ФИО* <input type="text" name="name" value="{{ author.name|default }}">
+    {{ error.name|default }}</p>
+
+    <p>Дата рождения <input type="date" name="dateOfBirth" value="{{ author.dateOfBirth|default }}">
+    {{ error.date|default }}</p>
+
+    <p>Телефон <input type="tel" pattern="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$" name="phone" value="{{ author.phone|default }}" placeholder="+7(999)-999-99-99">
+    {{ error.phone|default }}</p>
+
+    <p>Электронная почта* <input type="email" name="email" value="{{ author.email|default }}">
+    {{ error.email|default }}</p>
     <input name="create" type="submit" value="Создать">
     <input name="back" type="submit" value="Вернуться">
 </form>
