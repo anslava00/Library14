@@ -47,6 +47,64 @@ class BookRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * @return Book[] Returns an array of Book objects
+     */
+    public function findAndSort($par): array
+    {
+        $mode = 'ASC';
+        $orderByPar = 'books.id';
+        if (substr($par['sort'], -2) == "Up")
+        {
+            $mode = 'ASC';
+            $type = substr($par['sort'], 0, strlen($par['sort']) - 2);
+        } else
+        {
+            $mode = 'DESC';
+            $type = substr($par['sort'], 0, strlen($par['sort']) - 4);
+        }
+        switch ($type) {
+            case 'title':
+                $orderByPar = 'books.title';
+                break;
+            case 'author':
+                $orderByPar = 'nAuthors';
+                break;
+            case 'date':
+                $orderByPar = 'books.year';
+                break;
+        }
+        $books =  $this->createQueryBuilder('books')
+            ->addSelect('COUNT(authors.id) as HIDDEN nAuthors')
+            ->leftJoin('books.authors', 'authors')
+            ->groupBy('books.id')
+            ->orderBy($orderByPar, $mode);
+        $expr = $books->expr();
+
+        if (!empty($par['titleFilter']))
+            $books->where($expr->like($expr->lower('books.title'), $expr->lower(':title')))
+                ->setParameter('title', "%$par[titleFilter]%");
+        if (!empty($par['dateStart']) && !empty($par['dateEnd']))
+            $books->andWhere('books.year >= :dateStart')
+                ->andWhere('books.year <= :dateEnd')
+                ->setParameter('dateStart',\DateTime::createFromFormat('Y-m-d', $par['dateStart']))
+                ->setParameter('dateEnd',\DateTime::createFromFormat('Y-m-d', $par['dateEnd']));
+        if (!empty($par['countAuthorStart']))
+            $books->andHaving('COUNT(authors.id) >= '.$par['countAuthorStart']);
+        if (!empty($par['countAuthorEnd']))
+            $books->andHaving('COUNT(authors.id) <='.$par['countAuthorEnd']);
+        if (!empty($par['imageFilter']))
+            switch ($par['imageFilter']){
+                case 'imageExist':
+                    $books->andWhere($expr->isNotNull('books.image'));
+                    break;
+                case 'imageNotExist':
+                    $books->andWhere($expr->isNull('books.image'));
+                    break;
+            }
+        return $books->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Book[] Returns an array of Book objects
     //  */

@@ -15,9 +15,26 @@ class BookController extends AbstractController
     /**
      * @Route("/book/show", name="book_show")
      */
-    public function index(Request $request): Response
+    public function show(Request $request): Response
     {
         if ($request->isMethod('POST')) {
+            if (isset($_POST['sorted'])){
+                $data = $request->request->all();
+                $filterSort = [
+                    'sort' => $data['typeSort'],
+                    'titleFilter' => $data['filterTitle'],
+                    'dateStart' => $data['dateStart'],
+                    'dateEnd' => $data['dateEnd'],
+                    'countAuthorStart' => $data['countAuthorStart'],
+                    'countAuthorEnd' => $data['countAuthorEnd'],
+                    'imageFilter' => $data['imageFilter'],
+                ];
+                $books = $this->getDoctrine()->getRepository(Book::class)->findAndSort($filterSort);
+                return $this->render('book/show.html.twig', [
+                    "books" => $books,
+                    'filterSort' => $filterSort,
+                ]);
+            }
             if (isset($_POST['back']))
                 return $this->redirectToRoute('mainpage');
             if (isset($_POST['create']))
@@ -140,7 +157,10 @@ class BookController extends AbstractController
     {
         $book->setTitle($data['title']);
         $book->setDescription($data['description']);
-        $book->setImage($fileName);
+        if ($fileName != '')
+            $book->setImage($fileName);
+        else
+            $book->setImage(null);
         if (!empty($data['year']))
             $book->setYear(\DateTime::createFromFormat('Y-m-d', $data['year']));
         $doct = $this->getDoctrine()->getManager();

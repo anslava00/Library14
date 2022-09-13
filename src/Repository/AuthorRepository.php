@@ -56,8 +56,8 @@ class AuthorRepository extends ServiceEntityRepository
         foreach($authors as $author){
             $idAuthors[] = $author->getId();
         }
-        return $this->createQueryBuilder('a')
-            ->where('a.id NOT IN (:idAuthors)')
+        return $this->createQueryBuilder('authors')
+            ->where('authors.id NOT IN (:idAuthors)')
             ->setParameter('idAuthors', $idAuthors)
             ->getQuery()
             ->getResult()

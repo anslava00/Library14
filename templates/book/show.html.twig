@@ -16,6 +16,28 @@
             <option value ={{ book.id }}>{{ loop.index }}) {{ book.title }}</option>
         {% endfor %}
     </select></p>
+
+    <div>
+        <p><input name="typeSort" type="radio" value="titleUp" checked {% if filterSort.sort|default == "titleUp" %}checked{% endif %}>По названию по возрастанию
+        <input name="typeSort" type="radio" value="titleDown" {% if filterSort.sort|default == "titleDown" %}checked{% endif %}>по убыванию</p>
+        <p><input name="typeSort" type="radio" value="authorUp" {% if filterSort.sort|default == "authorUp" %}checked{% endif %}>По количеству авторов по возрастанию
+        <input name="typeSort" type="radio" value="authorDown" {% if filterSort.sort|default == "authorDown" %}checked{% endif %}>по убыванию</p>
+        <p><input name="typeSort" type="radio" value="dateUp" {% if filterSort.sort|default == "dateUp" %}checked{% endif %}>По дате по возрастанию
+        <input name="typeSort" type="radio" value="dateDown" {% if filterSort.sort|default == "dateDown" %}checked{% endif %}>по убыванию</p>
+    </div>
+    <div>
+        <p>Поиск по названию <input name="filterTitle" value="{{ filterSort.titleFilter|default }}"></p>
+        <p>От <input name="dateStart" type="date" value={{ filterSort.dateStart|default is empty ? "" : filterSort.dateStart|date("Y-m-d") }}></p>
+        <p>До <input name="dateEnd" type="date" value={{ filterSort.dateEnd|default  is empty ? "" : filterSort.dateEnd|date("Y-m-d") }}></p>
+        <p>По количеству авторов </p>
+        <p><input name="countAuthorStart" value="{{ filterSort.countAuthorStart|default }}"></p>
+        <p><input name="countAuthorEnd" value="{{ filterSort.countAuthorEnd|default }}"></p>
+        <p><input name="imageFilter" type="radio" value="all" checked {% if filterSort.imageFilter|default == "all" %}checked{% endif %}> Все</p>
+        <p><input name="imageFilter" type="radio" value="imageExist" {% if filterSort.imageFilter|default == "imageExist" %}checked{% endif %}> есть обложка</p>
+        <p><input name="imageFilter" type="radio" value="imageNotExist" {% if filterSort.imageFilter|default == "imageNotExist" %}checked{% endif %}> нет обложки</p>
+    </div>
+    <input name="sorted" type="submit" value="Сортировать">
 </form>
 </body>
+<script src="{{ asset('/jsScript/Books.js')}}"></script>
 </html>
