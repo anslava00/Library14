@@ -23,6 +23,8 @@ class MainPageController extends AbstractController
                 return $this->redirectToRoute('factory_show');
             if (isset($_POST['Book']))
                 return $this->redirectToRoute('book_show');
+            if (isset($_POST['Request']))
+                return $this->redirectToRoute('requests');
         }
 
         return $this->render('main_page/show.html.twig');

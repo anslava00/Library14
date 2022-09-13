@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Book;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\DBAL\DriverManager;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -63,7 +64,8 @@ class BookRepository extends ServiceEntityRepository
             $mode = 'DESC';
             $type = substr($par['sort'], 0, strlen($par['sort']) - 4);
         }
-        switch ($type) {
+        switch ($type)
+        {
             case 'title':
                 $orderByPar = 'books.title';
                 break;
@@ -103,6 +105,34 @@ class BookRepository extends ServiceEntityRepository
                     break;
             }
         return $books->getQuery()->getResult();
+    }
+
+     /**
+      * @return Book[] Returns an array of Book objects
+      */
+    public function findOrherRequestORM()
+    {
+        return $this->createQueryBuilder('books')
+            ->addSelect('COUNT(authors.id) as HIDDEN nAuthors')
+            ->leftJoin('books.authors', 'authors')
+            ->groupBy('books.id')
+            ->andHaving('COUNT(authors.id) >= 2')
+            ->getQuery()->getResult();
+    }
+
+    /**
+     * @return Book[] Returns an array of Book objects
+     */
+    public function findOrherRequestSQL(): array
+    {
+        $conn = $this->getEntityManager()->getConnection();
+        $sql = "SELECT books.*
+            FROM book books 
+            LEFT JOIN book_author authors
+            ON books.id = authors.book_id
+            GROUP BY books.id
+            HAVING COUNT(authors.book_id) >= 2";
+        return $conn->prepare($sql)->executeQuery()->fetchAllAssociative();
     }
 
     // /**

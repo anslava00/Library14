@@ -7,8 +7,7 @@
 <body>
 <form method="post" enctype="multipart/form-data" id="form" name="form">
     <H1>Создание новой книги</H1>
-    <p>Название* <input type="text" name="title">
-    {{ error.name|default }}</p>
+    <p>Название* <input type="text" name="title" required>
 
     <p>Описание <textarea  name="description"></textarea></p>
 
@@ -29,7 +28,7 @@
     </select></p>
 
     <input name="create" type="submit" value="Создать" onclick="createArray('authorChoose')">
-    <input name="back" type="submit" value="Вернуться">
+    <input name="back" type="submit" value="Вернуться" formnovalidate>
 </form>
 
 </body>

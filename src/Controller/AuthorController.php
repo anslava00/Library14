@@ -52,11 +52,12 @@ class AuthorController extends AbstractController
     public function profile($id, Request $request): Response
     {
         $author = $this->getDoctrine()->getRepository(Author::class)->find($id);
-
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('POST'))
+        {
             if (isset($_POST['back']))
                 return $this->redirectToRoute('author_show');
-            if (isset($_POST['edit'])){
+            if (isset($_POST['edit']))
+            {
                 $data = $request->request->all();
                 $error = $this->castomAuthorValidate($data, $id);
                 if (count($error) > 0)
@@ -78,7 +79,8 @@ class AuthorController extends AbstractController
     {
         if ($request->isMethod('POST'))
         {
-            if (isset($_POST['create'])){
+            if (isset($_POST['create']))
+            {
                 $data = $request->request->all();
                 $author = new Author();
                 $error = $this->castomAuthorValidate($data, $author->getId());
@@ -101,7 +103,8 @@ class AuthorController extends AbstractController
             $error['name'] = 'Укажите ФИО';
         if ($data['email'] === '')
             $error['email'] = 'Введите почту';
-        else{
+        else
+        {
             $author = $this->getDoctrine()->getRepository(Author::class)->findBy(['email' => $data['email']]);
             if (count($author) && $author[0]->getId() != $id)
                 $error['email'] = 'Такая почта уже существует';

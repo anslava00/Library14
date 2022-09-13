@@ -17,8 +17,10 @@ class BookController extends AbstractController
      */
     public function show(Request $request): Response
     {
-        if ($request->isMethod('POST')) {
-            if (isset($_POST['sorted'])){
+        if ($request->isMethod('POST'))
+        {
+            if (isset($_POST['sorted']))
+            {
                 $data = $request->request->all();
                 $filterSort = [
                     'sort' => $data['typeSort'],
@@ -40,16 +42,21 @@ class BookController extends AbstractController
             if (isset($_POST['create']))
                 return $this->redirectToRoute('book_create');
             $data = $request->request->all();
-            if (isset($data['book'])) {
-                if (isset($_POST['edit'])) {
+            if (isset($data['book']))
+            {
+                if (isset($_POST['edit']))
+                {
                     $id = $data['book'];
                     return $this->redirectToRoute('book_details' , ['id' => $id]);
                 }
-                if (isset($_POST['remove'])) {
+                if (isset($_POST['remove']))
+                {
                     $book = $this->getDoctrine()->getRepository(Book::class)->find($data['book']);
-                    if (isset($book)){
+                    if (isset($book))
+                    {
                         $authors = $book->getAuthors();
-                        foreach ($authors as $author) {
+                        foreach ($authors as $author)
+                        {
                             $author->setCountBook(-1);
                         }
                         $filesystem = new Filesystem();
@@ -58,7 +65,6 @@ class BookController extends AbstractController
                         $doct->remove($book);
                         $doct->flush();
                     }
-
                 }
             }
         }
@@ -75,13 +81,16 @@ class BookController extends AbstractController
     {
         $book = $this->getDoctrine()->getRepository(Book::class)->find($id);
 
-        if ($request->isMethod('POST')) {
+        if ($request->isMethod('POST'))
+        {
             if (isset($_POST['back']))
                 return $this->redirectToRoute('book_show');
-            if (isset($_POST['edit'])){
+            if (isset($_POST['edit']))
+            {
                 $file = $request->files->get('image');
                 $originalNameFile = '';
-                if (isset($file)){
+                if (isset($file))
+                {
                     $filesystem = new Filesystem();
                     $filesystem->remove('image/'.$book->getImage());
                     $path = $this->getParameter('kernel.project_dir').'/public/image';
@@ -91,20 +100,25 @@ class BookController extends AbstractController
 
                 $data = $request->request->all();
                 $authors = $book->getAuthors();
-                foreach ($authors as $author){
+                foreach ($authors as $author)
+                {
                     $haveInArray = false;
-                    for ($i = 0; $i < $data['countAuthor']; $i++){
-                        if ($author->getId() == $data['author' . $i]){
+                    for ($i = 0; $i < $data['countAuthor']; $i++)
+                    {
+                        if ($author->getId() == $data['author' . $i])
+                        {
                             $haveInArray = true;
                             break;
                         }
                     }
-                    if (!$haveInArray){
+                    if (!$haveInArray)
+                    {
                         $book->removeAuthor($author);
                         $author->setCountBook(-1);
                     }
                 }
-                for ($i = 0; $i < $data['countAuthor']; $i++){
+                for ($i = 0; $i < $data['countAuthor']; $i++)
+                {
                     $author = $this->getDoctrine()->getRepository(Author::class)->find($data['author' . $i]);
                     $book->addAuthor($author);
                     $author->setCountBook(1);
@@ -126,10 +140,12 @@ class BookController extends AbstractController
     {
         if ($request->isMethod('POST'))
         {
-            if (isset($_POST['create'])){
+            if (isset($_POST['create']))
+            {
                 $file = $request->files->get('image');
                 $originalNameFile = '';
-                if (isset($file)){
+                if (isset($file))
+                {
                     $path = $this->getParameter('kernel.project_dir').'/public/image';
                     $originalNameFile = $file->getClientOriginalName();
 
@@ -138,7 +154,8 @@ class BookController extends AbstractController
 
                 $book = new Book();
                 $data = $request->request->all();
-                for ($i = 0; $i < $data['countAuthor']; $i++){
+                for ($i = 0; $i < $data['countAuthor']; $i++)
+                {
                     $author = $this->getDoctrine()->getRepository(Author::class)->find($data['author' . $i]);
                     $book->addAuthor($author);
                     $author->setCountBook(1);
@@ -157,7 +174,7 @@ class BookController extends AbstractController
     {
         $book->setTitle($data['title']);
         $book->setDescription($data['description']);
-        if ($fileName != '')
+        if (!empty($fileName))
             $book->setImage($fileName);
         else
             $book->setImage(null);

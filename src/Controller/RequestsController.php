@@ -33,7 +33,7 @@ class RequestsController extends AbstractController
                 $books = $this->getDoctrine()->getRepository(Book::class)->findAll();
             }
         }
-        return $this->render('requests/index.html.twig', [
+        return $this->render('requests/show.html.twig', [
             'books' => $books,
         ]);
     }

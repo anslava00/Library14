@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Requests</title>
+</head>
+<body>
+<form method="post">
+    <h1>Дополнительные запросы</h1>
+    <p><input name="ORM" type="submit" value="Запрос через ORM"></p>
+    <p><input name="SQL" type="submit" value="Запрос черзе SQL"></p>
+    <p><input name="ALL" type="submit" value="Запрос всего"></p>
+    <p><select  size="{{ books|length }}" name="book">
+            {% for book in books %}
+                <option value ={{ book.id }}>{{ loop.index }}) {{ book.title }}</option>
+            {% endfor %}
+    </select></p>
+
+    <p><input name="back" type="submit" value="Вернуться"></p>
+</form>
+</body>
+</html>
