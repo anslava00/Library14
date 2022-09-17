@@ -87,17 +87,7 @@ class BookController extends AbstractController
                 return $this->redirectToRoute('book_show');
             if (isset($_POST['edit']))
             {
-                $file = $request->files->get('image');
-                $originalNameFile = '';
-                if (isset($file))
-                {
-                    $filesystem = new Filesystem();
-                    $filesystem->remove('image/'.$book->getImage());
-                    $path = $this->getParameter('kernel.project_dir').'/public/image';
-                    $originalNameFile = $file->getClientOriginalName();
-                    $file->move($path, $originalNameFile);
-                }
-
+                $book->setFile($request->files->get('image'));
                 $data = $request->request->all();
                 $authors = $book->getAuthors();
                 foreach ($authors as $author)
@@ -123,7 +113,7 @@ class BookController extends AbstractController
                     $book->addAuthor($author);
                     $author->setCountBook(1);
                 }
-                $this->save($data, $book, $originalNameFile);
+                $this->save($data, $book);
             }
         }
         $authors = $this->getDoctrine()->getRepository(Author::class)->findAllExcept($book->getAuthors());
@@ -142,17 +132,8 @@ class BookController extends AbstractController
         {
             if (isset($_POST['create']))
             {
-                $file = $request->files->get('image');
-                $originalNameFile = '';
-                if (isset($file))
-                {
-                    $path = $this->getParameter('kernel.project_dir').'/public/image';
-                    $originalNameFile = $file->getClientOriginalName();
-
-                    $file->move($path, $originalNameFile);
-                }
-
                 $book = new Book();
+                $book->setFile($request->files->get('image'));
                 $data = $request->request->all();
                 for ($i = 0; $i < $data['countAuthor']; $i++)
                 {
@@ -160,7 +141,7 @@ class BookController extends AbstractController
                     $book->addAuthor($author);
                     $author->setCountBook(1);
                 }
-                $this->save($data, $book, $originalNameFile);
+                $this->save($data, $book);
             }
             return $this->redirectToRoute('book_show');
         }
@@ -170,14 +151,9 @@ class BookController extends AbstractController
         ]);
     }
 
-    public function save($data, Book $book, $fileName): Book
+    public function save($data, Book $book): Book
     {
         $book->setTitle($data['title']);
-        $book->setDescription($data['description']);
-        if (!empty($fileName))
-            $book->setImage($fileName);
-        else
-            $book->setImage(null);
         if (!empty($data['year']))
             $book->setYear(\DateTime::createFromFormat('Y-m-d', $data['year']));
         $doct = $this->getDoctrine()->getManager();

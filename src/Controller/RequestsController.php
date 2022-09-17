@@ -14,7 +14,7 @@ class RequestsController extends AbstractController
     /**
      * @Route("/requests", name="requests")
      */
-    public function index(Request $request): Response
+    public function show(Request $request): Response
     {
         $books = [];
         if ($request->isMethod('POST')) {

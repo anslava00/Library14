@@ -22,18 +22,18 @@ class Author
     /**
      * @ORM\Column(type="string", length=255)
      */
-    private $Name;
+    private $name;
 
 
     /**
      * @ORM\Column(type="date", nullable=true)
      */
-    private $Date_of_birth;
+    private $dateOfBirth;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
      */
-    private $Phone;
+    private $phone;
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
@@ -48,7 +48,7 @@ class Author
     /**
      * @ORM\Column(type="integer", nullable=true)
      */
-    private $CountBook;
+    private $countBook;
 
     public function __construct()
     {
@@ -62,36 +62,36 @@ class Author
 
     public function getName(): ?string
     {
-        return $this->Name;
+        return $this->name;
     }
 
-    public function setName(string $Name): self
+    public function setName(string $name): self
     {
-        $this->Name = $Name;
+        $this->name = $name;
 
         return $this;
     }
 
     public function getDateOfBirth(): ?\DateTimeInterface
     {
-        return $this->Date_of_birth;
+        return $this->dateOfBirth;
     }
 
-    public function setDateOfBirth(?\DateTimeInterface $Date_of_birth): self
+    public function setDateOfBirth(?\DateTimeInterface $dateOfBirth): self
     {
-        $this->Date_of_birth = $Date_of_birth;
+        $this->dateOfBirth = $dateOfBirth;
 
         return $this;
     }
 
     public function getPhone(): ?string
     {
-        return $this->Phone;
+        return $this->phone;
     }
 
-    public function setPhone(?string $Phone): self
+    public function setPhone(?string $phone): self
     {
-        $this->Phone = $Phone;
+        $this->phone = $phone;
 
         return $this;
     }
@@ -137,12 +137,12 @@ class Author
 
     public function getCountBook(): ?int
     {
-        return $this->CountBook;
+        return $this->countBook;
     }
 
-    public function setCountBook(?int $CountBook): self
+    public function setCountBook(?int $countBook): self
     {
-        $this->CountBook += $CountBook;
+        $this->countBook += $countBook;
 
         return $this;
     }
