@@ -17,9 +17,23 @@ class FactoryController extends AbstractController
     {
         if ($request->isMethod('POST'))
         {
-            if (isset($_POST['Author']))
-                AuthorFactory::createMany(5);
+            if (isset($_POST['back']))
+                return $this->redirectToRoute('mainpage');
+            if (isset($_POST['author']))
+                $this->createAuthor($request->request->all()['count']);
+            if (isset($_POST['book']))
+                $this->createBook($request->request->all()['count']);
+
         }
         return $this->render('factory/index.html.twig');
+    }
+
+    public function createAuthor($default = 5):void
+    {
+        AuthorFactory::createMany($default);
+    }
+    public function createBook($default = 5):void
+    {
+
     }
 }
