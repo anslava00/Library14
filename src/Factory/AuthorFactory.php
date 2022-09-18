@@ -41,7 +41,7 @@ final class AuthorFactory extends ModelFactory
             // TODO add your default values here (https://symfony.com/bundles/ZenstruckFoundryBundle/current/index.html#model-factories)
             'Name' => self::faker()->name(),
             'date_of_birth' =>self::faker()->dateTime,
-            'phone' => self::faker()->phoneNumber(),
+            'phone' => self::faker()->e164PhoneNumber('+79999999999'),
             'email' => self::faker()->email(),
         ];
     }
