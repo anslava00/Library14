@@ -12,7 +12,7 @@
 
     <p>Дата рождения <input name="dateOfBirth" type="date" value={{ author.dateOfBirth is empty ? "" : author.dateOfBirth|date("Y-m-d") }}></p>
 
-    <p>Телефон <input name="phone"  type="tel" pattern="^((8|\+7)[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$"
+    <p>Телефон <input name="phone"  type="tel" pattern="^((8|\+[1-9])[\- ]?)?(\(?\d{3}\)?[\- ]?)?[\d\- ]{7,10}$"
                       value="{{ author.phone|default }}" placeholder="+7(999)-999-99-99"></p>
 
     <p>Почта <input name="email" type="text" value={{ author.email }}>
