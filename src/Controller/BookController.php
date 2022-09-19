@@ -154,6 +154,7 @@ class BookController extends AbstractController
     public function save($data, Book $book): Book
     {
         $book->setTitle($data['title']);
+        $book->setDescription($data['description']);
         if (!empty($data['year']))
             $book->setYear(\DateTime::createFromFormat('Y-m-d', $data['year']));
         $doct = $this->getDoctrine()->getManager();
