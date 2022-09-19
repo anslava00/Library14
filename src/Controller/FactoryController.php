@@ -14,7 +14,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class FactoryController extends AbstractController
 {
     /**
-     * @Route("/", name="factory_show")
+     * @Route("/factory", name="factory_show")
      */
     public function index(Request $request): Response
     {
