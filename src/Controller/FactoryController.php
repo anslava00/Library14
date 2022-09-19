@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use function Zenstruck\Foundry\faker;
 
 class FactoryController extends AbstractController
 {
@@ -41,7 +42,19 @@ class FactoryController extends AbstractController
     }
     public function createBook($default):void
     {
-        BookFactory::createMany($default);
+//        BookFactory::createMany($default);
+        for ($i = 0; $i < $default; $i++)
+        {
+            $book = new Book;
+            $book->setTitle(faker()->streetName());
+            $book->setDescription(faker()->realText());
+            $book->setYear(faker()->dateTime);
+
+            $doct = $this->getDoctrine()->getManager();
+            $doct->persist($book);
+            $doct->flush();
+        }
+
     }
     public function createRelation():void
     {
