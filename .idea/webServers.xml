@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="675397d7-f61f-42d3-b929-27db3678d403" name="testlibrary" url="http://deploy.us1.frbit.com">
+        <fileTransfer accessType="SFTP" host="deploy.us1.frbit.com" port="22" sshConfigId="02bfd98b-6b78-4bbb-8942-1babe8ac7f3a" sshConfig="symfony-xeuv.06k775jpdbuozt9j@deploy.us1.frbit.com:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>
