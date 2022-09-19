@@ -37,8 +37,7 @@ class FactoryController extends AbstractController
 
     public function createAuthor($default):void
     {
-        echo 'some';
-//        AuthorFactory::createMany($default);
+        AuthorFactory::createMany($default);
     }
     public function createBook($default):void
     {
