@@ -6,6 +6,7 @@ use App\Entity\Author;
 use App\Entity\Book;
 use App\Factory\AuthorFactory;
 use App\Factory\BookFactory;
+use Faker\Factory;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
@@ -43,17 +44,16 @@ class FactoryController extends AbstractController
     public function createBook($default):void
     {
 //        BookFactory::createMany($default);
-        for ($i = 0; $i < $default; $i++)
-        {
+//        for ($i = 0; $i < $default; $i++)
+//        {
             $book = new Book;
-            $book->setTitle(faker()->streetName());
-            $book->setDescription(faker()->realText());
-            $book->setYear(faker()->dateTime);
+            $book->setTitle("test");
+            $book->setDescription("test");
 
             $doct = $this->getDoctrine()->getManager();
             $doct->persist($book);
             $doct->flush();
-        }
+//        }
 
     }
     public function createRelation():void
