@@ -16,7 +16,7 @@ use function Zenstruck\Foundry\faker;
 class FactoryController extends AbstractController
 {
     /**
-     * @Route("index.php/factory", name="factory_show")
+     * @Route("factory", name="factory_show")
      */
     public function index(Request $request): Response
     {
@@ -37,26 +37,26 @@ class FactoryController extends AbstractController
         return $this->render('factory/index.html.twig');
     }
 
-    public function createAuthor($default):void
+    public function createAuthor($default)
     {
         AuthorFactory::createMany($default);
     }
-    public function createBook($default):void
+    public function createBook($default)
     {
-//        BookFactory::createMany($default);
+        BookFactory::createMany($default);
 //        for ($i = 0; $i < $default; $i++)
 //        {
-            $book = new Book;
-            $book->setTitle("test");
-            $book->setDescription("test");
-
-            $doct = $this->getDoctrine()->getManager();
-            $doct->persist($book);
-            $doct->flush();
+//            $book = new Book;
+//            $book->setTitle("test");
+//            $book->setDescription("test");
+//
+//            $doct = $this->getDoctrine()->getManager();
+//            $doct->persist($book);
+//            $doct->flush();
 //        }
 
     }
-    public function createRelation():void
+    public function createRelation()
     {
         $books = $this->getDoctrine()->getRepository(Book::class)->findAll();
         $authors = $this->getDoctrine()->getRepository(Author::class)->findAll();
@@ -78,7 +78,7 @@ class FactoryController extends AbstractController
                 $doct->flush();
             }
     }
-    public function randUnic($countAuthors, $requireAuthor):array
+    public function randUnic($countAuthors, $requireAuthor)
     {
         $iAuthors = [];
         for ($i = 0; $i < $requireAuthor; $i++)
