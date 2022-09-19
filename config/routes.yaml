@@ -2,7 +2,7 @@
 #    path: /
 #    controller: App\Controller\DefaultController::index
 
-# config/routes.yaml
+ config/routes.yaml
 index:
   path: /factory
   controller: App\Controller\FactoryController::index
