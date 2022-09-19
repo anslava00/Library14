@@ -12,7 +12,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AuthorController extends AbstractController
 {
     /**
-     * @Route("index.php/author/show", name="author_show")
+     * @Route("author/show", name="author_show")
      */
     public function show(Request $request): Response
     {
@@ -47,7 +47,7 @@ class AuthorController extends AbstractController
         ]);
     }
     /**
-     * @Route("index.php/author/show/profile/{id}", name="author_profile")
+     * @Route("author/show/profile/{id}", name="author_profile")
      */
     public function profile($id, Request $request): Response
     {
@@ -73,7 +73,7 @@ class AuthorController extends AbstractController
         ]);
     }
     /**
-     * @Route("index.php/author/create", name="author_create")
+     * @Route("author/create", name="author_create")
      */
     public function create(Request $request): Response
     {

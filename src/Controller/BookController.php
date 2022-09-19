@@ -13,7 +13,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class BookController extends AbstractController
 {
     /**
-     * @Route("index.php/book/show", name="book_show")
+     * @Route("book/show", name="book_show")
      */
     public function show(Request $request): Response
     {
@@ -75,7 +75,7 @@ class BookController extends AbstractController
             ]);
     }
     /**
-     * @Route("index.php/book/show/details/{id}", name="book_details")
+     * @Route("book/show/details/{id}", name="book_details")
      */
     public function details($id, Request $request): Response
     {
@@ -124,7 +124,7 @@ class BookController extends AbstractController
         ]);
     }
     /**
-     * @Route("index.php/book/create", name="book_create")
+     * @Route("book/create", name="book_create")
      */
     public function create(Request $request): Response
     {

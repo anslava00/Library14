@@ -16,7 +16,7 @@ use function Zenstruck\Foundry\faker;
 class FactoryController extends AbstractController
 {
     /**
-     * @Route("index.php/factory", name="factory_show")
+     * @Route("factory", name="factory_show")
      */
     public function index(Request $request): Response
     {
