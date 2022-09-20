@@ -27,7 +27,10 @@ class MainPageController extends AbstractController
                 return $this->redirectToRoute('requests');
             if (isset($_POST['Admin']))
                 return $this->redirect('admin/dashboard');
-//                return $this->redirectToRoute('admin');
+            if (isset($_POST['Login']))
+                return $this->redirect('/login');
+            if (isset($_POST['Register']))
+                return $this->redirect('/register');
         }
 
         return $this->render('main_page/show.html.twig');
